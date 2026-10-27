@@ -2,6 +2,7 @@ import csv
 import os
 from pathlib import Path
 from collections import Counter
+from datetime import date
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data" / "raw"
@@ -19,8 +20,8 @@ with CSV_PATH.open("r", encoding="utf-8-sig", newline="") as file:
     games = list(reader)
     # print(reader.fieldnames)
 
-    # for index, row in enumerate(games, start = 1):
-    #     print(index, row)
+    for index, row in enumerate(games, start = 1):
+        print(index, row)
         
 
 # Challenge 1 -- Count rated games
@@ -193,3 +194,37 @@ for game in games:
     converted_replay.append(is_replayed)
 print("Replayed games:", replay_amount)
 print("Not replayed games:", not_replay_amount)
+
+# Converts the start time value from a string to a date type
+# From datetime library
+converted_startdates = []
+startdate_amount = 0
+no_startdate_amount = 0
+for game in games:
+    startdate = game["Start Date"].strip()
+    if startdate in ("0", ""):
+        converted_startdates.append(None)
+        no_startdate_amount += 1
+    else:
+        converted_startdates.append(date.fromisoformat(startdate))
+        startdate_amount += 1
+print("Total converted dates:", len(converted_startdates))
+print("Total counted:", startdate_amount + no_startdate_amount )
+
+# Converts the finish time value from a string to a date type
+# From datetime library
+converted_finishdates = []
+finishdate_amount = 0
+no_finishdate_amount = 0
+for game in games:
+    finishdate = game["Finish Date"].strip()
+    if finishdate in ("0", ""):
+        converted_finishdates.append(None)
+        no_finishdate_amount += 1
+    else:
+        converted_finishdates.append(date.fromisoformat(finishdate))
+        finishdate_amount += 1
+print("Total converted dates:", len(converted_finishdates))
+print("Total counted:", finishdate_amount + no_finishdate_amount )
+
+# move on from here
