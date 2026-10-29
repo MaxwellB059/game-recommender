@@ -41,9 +41,9 @@ for game in games:
     if (game["In Backlog"] == 'true'):
         in_backlog += 1
 
-print(f"Total games: {total_games}")
-print(f"Rated games: {rated_games}")
-print(f"In backlog: {in_backlog}")
+# print(f"Total games: {total_games}")
+# print(f"Rated games: {rated_games}")
+# print(f"In backlog: {in_backlog}")
 
 # Challenge 3 -- Check for duplicate IDs
 #   Determine whether any records share the same "ID"
@@ -56,7 +56,7 @@ if (len(game_ids) == len(unique_ids)):
     duplicate_ids = False
 else:
     duplicate_ids = True
-print(duplicate_ids)
+# print(duplicate_ids)
 
 
 # Counts how many entries there are for each rating number
@@ -66,9 +66,10 @@ for game in games:
     ## print(game["Rating"] + " ")
 rating_counts = Counter(ratings)
 for rating, count in rating_counts.items():
-    print(f"Rating {rating!r}: {count} games")
+    # print(f"Rating {rating!r}: {count} games")
+    continue
 
-print("Total records:", len(games))
+# print("Total records:", len(games))
 unrated_games = rating_counts['0'] + rating_counts['']
 rated_games = len(games) - unrated_games
 
@@ -90,7 +91,7 @@ for rating in converted_ratings:
         if rating < 1 or rating > 10:
             invalid_ratings.append(rating)
 
-print("Invalid ratings:", invalid_ratings)
+# print("Invalid ratings:", invalid_ratings)
 
 # Converts the played value from a string to a boolean
 converted_played = []
@@ -227,8 +228,8 @@ for index, game in enumerate(games):
     }
     cleaned_games.append(cleaned_game)
 
-print("Total cleaned games:", len(cleaned_games))
-print("First cleaned game:", cleaned_games[0])
+# print("Total cleaned games:", len(cleaned_games))
+# print("First cleaned game:", cleaned_games[0])
 
 # Define where processed data will be stored
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
@@ -251,7 +252,7 @@ backlog_and_not_played = []
 for game in cleaned_games:
     if game["in_backlog"] is True and game["played"] is False:
         backlog_and_not_played.append(game)
-        print(game["name"])
+        # print(game["name"])
 print(len(backlog_and_not_played))
 
 if JSON_PATH.exists():
@@ -366,3 +367,25 @@ print("Games with recorded platforms:", games_with_platforms)
 ##  2. How many games have an empty played_on list?
 ##  3. Are there any games with a platform named "Unknown"?
 ##  4. We still have exactly 611 games after combining the datasets?
+at_least_one_platform = 0
+empty_played_on = 0
+unknown_platform = 0
+how_many_games = 0
+
+for game in cleaned_games:
+    played_on = game.get("played_on", [])
+
+    if played_on:
+        at_least_one_platform += 1
+    else:
+        empty_played_on += 1
+
+    if any(platform.get("name") == "Unknown" for platform in played_on):
+        unknown_platform += 1
+
+    how_many_games += 1
+
+print("Games with at least one platform:", at_least_one_platform)
+print("Games with an empty played_on list:", empty_played_on)
+print("Games with an Unknown platform:", unknown_platform)
+print("Exactly 611 games:", how_many_games == 611)
