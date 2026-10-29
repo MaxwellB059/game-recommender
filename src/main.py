@@ -103,8 +103,6 @@ for game in games:
     else:
         unplayed_games += 1
     converted_played.append(is_played)
-print("Played games:", played_games)
-print("Unplayed games:", unplayed_games)
 
 # Converts the currently playing value from a string to a boolean
 converted_currently_playing = []
